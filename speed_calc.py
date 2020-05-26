@@ -31,7 +31,7 @@ for spl in range(spl_start, spl_range):
 			distance = sum(delta_d[i-spl+1:i+1])
 			if distance>100:
 				speed = distance/(inputPDF[i,0] - inputPDF[i-spl,0])*1000000
-				heading = inputPDF[i, 6]
+				heading = np.mean(inputPDF[i-spl+1:i+1, 6])
 				altitude = delta_h[i] - delta_h[i-spl]
 				angle_deviation = np.arctan(altitude/distance)*180/3.1415926
 				top_speed.append((speed, altitude, distance, angle_deviation, heading))
@@ -44,7 +44,7 @@ direction_1 = []
 direction_2 = []
 
 for run in top_speed:
-	if np.abs(run[-1] - heading_init) > 90:
+	if 90 < np.abs(run[-1] - heading_init) < 270:
 		direction_2.append(run)
 	else: direction_1.append(run)
 
